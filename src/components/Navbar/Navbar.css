@@ -5,14 +5,14 @@ nav_container {
     justify-content: center;
     flex-direction: column;
     position: fixed;
-    background-color: #262322;
+    /*background-color: #262322; */
     z-index: 1000;
     top: 0;
     transition: 0.2s;
     -webkit-transition: 0.4s;
   }
   .scrolled {
-    visibility: hidden;
-    opacity: 0;
-    transition: visibility 0.2s, opacity 0.2s linear;
+    /*visibility: hidden;
+    opacity: 0; */
+    transition: visibility 0.2s, opacity 0.2s linear;
   }

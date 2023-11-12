@@ -1,5 +1,47 @@
+import { useState, useEffect } from 'react';
 
-import { useState, useEffect, useContext } from 'react';
+export default function useNavbar() {
+  const [open, setOpen] = useState(false);
+  const [scroll, setScroll] = useState(false);
+  const [scrollPosition, setScrollPosition] = useState(0);
+  const [width900, setWidth900] = useState(window.innerWidth <= 900);
+
+  function toggleDrawer(isOpen: boolean) {
+    setOpen(isOpen);
+    console.log(isOpen);
+  }
+
+  useEffect(() => {
+    function handleScroll() {
+      const currentPosition = window.scrollY;
+      setScrollPosition(currentPosition);
+
+      if (currentPosition > scrollPosition) {
+        setScroll(true);
+      } else if (currentPosition <= scrollPosition) {
+        setScroll(false);
+      }
+    }
+
+    function handleResize() {
+      setWidth900(window.innerWidth <= 900);
+    }
+
+    window.addEventListener('scroll', handleScroll);
+    window.addEventListener('resize', handleResize);
+
+    return () => {
+      window.removeEventListener('scroll', handleScroll);
+      window.removeEventListener('resize', handleResize);
+    };
+  }, [scrollPosition]);
+
+  return [scroll, open, toggleDrawer, width900] as const;
+}
+
+
+
+{/*import { useState, useEffect, useContext } from 'react';
 import { themeContext } from '../Contexts/MediaQueries/MediaQuery';
 
 export default function useNavbar() {
@@ -29,4 +71,4 @@ export default function useNavbar() {
     };
   }, [scrollp]);
   return [scroll, open, toggleDrawer, width900] as const;
-}
+} */}

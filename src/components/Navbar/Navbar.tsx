@@ -1,4 +1,181 @@
-import React from 'react';
+import {
+  Box,
+  Flex,
+  IconButton,
+  Button,
+  Image,
+  Text,
+  Drawer,
+  DrawerOverlay,
+  DrawerContent,
+  DrawerCloseButton,
+  DrawerHeader,
+  DrawerBody,
+  Link as ChakraLink,
+} from '@chakra-ui/react';
+import { Link as ScrollLink, animateScroll as scroll } from 'react-scroll';
+import { HamburgerIcon } from '@chakra-ui/icons';
+import logo from '../../assets/logo.png';
+import './Navbar.css';
+import useNavbar from '../../hooks/useNavbar';
+
+const Navbar = () => {
+  const navlinks = [
+    { name: 'Home', link: '/' },
+    { name: 'About', link: '/about' },
+    { name: 'Styles', link: '/styles' },
+    { name: 'Stories', link: '/stories' },
+  ];
+
+  const whatsappUrl = 'https://wa.me/918075258653?text=Hi';
+
+  const [scroll, drawerOpen, toggleDrawer] = useNavbar();
+
+  const scrollToTop = () => {
+    scroll.scrollToTop();
+  };
+
+  const closeDrawer = () => {
+    toggleDrawer(false);
+  };
+
+  return (
+    <Box width="100vw">
+        <Flex
+    as="header"
+    position="fixed"
+    minHeight="5rem"
+    align="center"
+    justify="center"
+    border={scroll ? '1.5px solid green.900' : 'none'}
+    bg={scroll ? 'rgba(235, 246, 234, 0.9)' : 'rgba(235, 246, 234, 0.9)'}  //need to fix this
+    padding="15px 0"
+    width="100vw"
+    transition={scroll ? 'opacity 0.2s linear' : '0.2s'}
+    
+    //transition={scroll ? 'visibility 0.2s, opacity 0.2s linear' : '0.2s'}
+    //visibility={scroll ? 'hidden' : 'visible'}
+    opacity={scroll ? '0.9' : '1'}
+  >
+        <Flex
+          as="nav"
+          minWidth={{ base: '95vw', md: '85vw', xl: '1400px' }}
+          align="center"
+          justify={{ base: 'center', md: 'space-between' }}
+          padding="0 !important"
+        >
+          <IconButton
+            size="lg"
+            color="green.700"
+            aria-label="menu"
+            display={{ base: 'flex', md: 'none' }}
+            position="absolute"
+            top="20px"
+            left="20px"
+            onClick={() => toggleDrawer(true)}
+          >
+            <HamburgerIcon />
+          </IconButton>
+
+          <Image
+            src={logo}
+            alt=""
+            boxSize="3.5rem"
+            cursor="pointer"
+            onClick={scrollToTop}
+          />
+
+          <Flex
+            display={{ base: 'none', md: 'flex' }}
+            flexDirection="row"
+            justifyContent="space-between"
+            borderRadius="1.53125rem"
+            border={scroll ? '1.5px solid green.500' : 'none'}
+          >
+            {navlinks.map((value, index) => (
+              <ScrollLink
+                key={index}
+                to={value.link}
+                style={{ textDecoration: 'none' }}
+                onClick={scrollToTop}
+              >
+                <Text
+                  color={scroll ? 'green.500' : 'green.700'}
+                  margin="10px 20px"
+                  fontSize={{ md: '1rem', xl: '1.25rem' }}
+                  cursor="pointer"
+                  _hover={{
+                    fontWeight: '500',
+                    color: scroll ? 'green.700' : 'green.900',
+                  }}
+                >
+                  {value.name}
+                </Text>
+              </ScrollLink>
+            ))}
+          </Flex>
+
+          <Box>
+            <Button
+              onClick={() => {
+                window.location.href = whatsappUrl;
+              }}
+              bg={scroll ? 'green.500' : 'none'}
+              width="7.375rem"
+              display={{ base: 'none', md: 'flex' }}
+              height="3.0625rem"
+              flexShrink="0"
+              color={scroll ? 'green.700' : 'green.900'}
+              _hover={{
+                bg: 'orange.500',
+                color: 'white',
+              }}
+            >
+              <Text fontWeight="500" textTransform="none">
+                Contact Us
+              </Text>
+            </Button>
+          </Box>
+        </Flex>
+      </Flex>
+      {/* Drawer */}
+      <Drawer placement="left" onClose={closeDrawer} isOpen={drawerOpen}>
+        <DrawerOverlay />
+        <DrawerContent>
+          <DrawerCloseButton />
+          <DrawerHeader>Menu</DrawerHeader>
+          <DrawerBody>
+            {navlinks.map((value, index) => (
+              <ChakraLink
+                key={index}
+                as={ScrollLink}
+                to={value.link}
+                textDecoration="none"
+                onClick={() => {
+                  closeDrawer();
+                  scrollToTop();
+                }}
+              >
+                <Text
+                  color={scroll ? 'green.500' : 'green.700'}
+                  margin="20px 0"
+                  style={{ textDecoration: 'none' }}
+                  cursor="pointer"
+                >
+                  {value.name}
+                </Text>
+              </ChakraLink>
+            ))}
+          </DrawerBody>
+        </DrawerContent>
+      </Drawer>
+    </Box>
+  );
+};
+
+export default Navbar;
+
+{/*import React from 'react';
 import {
   Box,
   Flex,
@@ -14,9 +191,11 @@ import {
   DrawerBody,
 } from '@chakra-ui/react';
 import { Link as ChakraLink } from '@chakra-ui/react';
+import useNavbar from '../Hooks/useNavbar';
 import { Link as ScrollLink, animateScroll as scroll } from 'react-scroll';
 import { HamburgerIcon } from '@chakra-ui/icons';
 import logo from '../../assets/logo.png';
+import './Navbar.css';
 
 const Navbar = () => {
   const navlinks = [
@@ -46,7 +225,7 @@ const Navbar = () => {
         minHeight="5rem"
         align="center"
         justify="center"
-        border="1.5px solid green.500"
+        border="1.5px solid yellow.500"
         bg="#EBF6EA"
         padding="15px 0"
         width="100vw"
@@ -136,7 +315,7 @@ const Navbar = () => {
         </Flex>
       </Flex>
       {/* Drawer */}
-      <Drawer placement="left" onClose={closeDrawer} isOpen={drawerOpen}>
+     {/*} <Drawer placement="left" onClose={closeDrawer} isOpen={drawerOpen}>
         <DrawerOverlay />
         <DrawerContent>
           <DrawerCloseButton />
@@ -166,4 +345,4 @@ const Navbar = () => {
   );
 };
 
-export default Navbar;
+export default Navbar; */}
